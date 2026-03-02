@@ -1,0 +1,45 @@
+spring:
+
+  # --- Database ---
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fridgemate
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+
+  # --- JPA / Hibernate ---
+  jpa:
+    hibernate:
+      # "update" = Hibernate reads your @Entity classes and creates/alters tables automatically.
+      # Never use "update" in production — use "validate" there and manage schema with migrations.
+      ddl-auto: update
+    show-sql: true          # logs every SQL statement — helpful while learning, turn off in prod
+    properties:
+      hibernate:
+        format_sql: true    # pretty-prints the SQL so it's readable in logs
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  # --- Email (Gmail SMTP) ---
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME:your-email@gmail.com}
+    password: ${MAIL_PASSWORD:your-app-password}  # Gmail App Password, not your real password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true    # encrypts the connection before sending credentials
+
+# --- Custom App Properties ---
+app:
+  jwt:
+    secret: ${JWT_SECRET:thisIsAVeryLongSecretKeyForFridgeMateAppThatIsAtLeast256BitsLong!!}
+    expiration-ms: 86400000   # 24 hours in milliseconds
+
+  spoonacular:
+    api-key: ${SPOONACULAR_API_KEY:your-spoonacular-key}
+    base-url: https://api.spoonacular.com
+
+  expiry-warning-days: 7     # send reminders when items expire within this many days
